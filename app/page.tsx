@@ -31,6 +31,9 @@ export default function ChatPage() {
     body: {
       model: selectedModel,
     },
+    onError: (error) => {
+      console.error("Chat error:", error);
+    },
   });
 
   useEffect(() => {
@@ -98,6 +101,25 @@ export default function ChatPage() {
                 {messages.map((message) => (
                   <ChatMessage key={message.id} message={message} />
                 ))}
+                {isLoading && (
+                  <div className="border-b border-gray-100 px-6 py-8">
+                    <div className="mx-auto max-w-3xl">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500">
+                          <span className="text-sm font-semibold text-white">AI</span>
+                        </div>
+                        <div className="flex-1 space-y-2 pt-1">
+                          <div className="flex items-center gap-2">
+                            <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "0ms" }}></div>
+                            <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "150ms" }}></div>
+                            <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "300ms" }}></div>
+                            <span className="ml-2 text-sm text-gray-500">正在思考...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

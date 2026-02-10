@@ -25,27 +25,37 @@ export default function LoginPage() {
       return;
     }
 
+    // 检查环境变量
+    if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 
+        !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 
+        !process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
+      setMessage("EmailJS 配置错误，请联系管理员");
+      console.error("Missing EmailJS configuration");
+      return;
+    }
+
     setLoading(true);
     const code = generateCode();
     setSentCode(code);
 
     try {
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+      const result = await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
         {
           to_email: email,
           verification_code: code,
           to_name: email.split("@")[0],
         },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );
 
+      console.log("Email sent successfully:", result);
       setCodeSent(true);
       setMessage("验证码已发送到您的邮箱");
-    } catch (error) {
-      setMessage("发送验证码失败，请重试");
-      console.error(error);
+    } catch (error: any) {
+      console.error("EmailJS Error:", error);
+      setMessage(`发送失败: ${error.text || error.message || "请检查邮箱地址或稍后重试"}`);
     } finally {
       setLoading(false);
     }

@@ -1,0 +1,10 @@
+{
+  "env": {
+    "ANTHROPIC_API_KEY": "@anthropic_api_key",
+    "OPENAI_API_KEY": "@openai_api_key",
+    "DEEPSEEK_API_KEY": "@deepseek_api_key",
+    "NEXT_PUBLIC_EMAILJS_SERVICE_ID": "@emailjs_service_id",
+    "NEXT_PUBLIC_EMAILJS_TEMPLATE_ID": "@emailjs_template_id",
+    "NEXT_PUBLIC_EMAILJS_PUBLIC_KEY": "@emailjs_public_key"
+  }
+}

@@ -44,8 +44,11 @@ export default function LoginPage() {
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
         {
           to_email: email,
+          user_email: email,
+          email: email,
           verification_code: code,
           to_name: email.split("@")[0],
+          message: `你的验证码是：${code}`,
         },
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );

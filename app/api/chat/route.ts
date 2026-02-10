@@ -16,24 +16,34 @@ const deepseek = createOpenAI({
 export async function POST(req: Request) {
   const { messages, model } = await req.json();
 
-  let selectedModel;
+  let result;
 
   if (model === "gpt-4o") {
-    selectedModel = openai("gpt-4o");
+    result = await streamText({
+      model: openai("gpt-4o"),
+      system: SYSTEM_PROMPT,
+      messages,
+    });
   } else if (model === "claude-3-5-sonnet") {
-    selectedModel = anthropic("claude-3-5-sonnet-20241022");
+    result = await streamText({
+      model: anthropic("claude-3-5-sonnet-20241022"),
+      system: SYSTEM_PROMPT,
+      messages,
+    });
   } else if (model === "deepseek-chat") {
-    selectedModel = deepseek("deepseek-chat");
+    result = await streamText({
+      model: deepseek("deepseek-chat"),
+      system: SYSTEM_PROMPT,
+      messages,
+    });
   } else {
     // 默认使用 DeepSeek
-    selectedModel = deepseek("deepseek-chat");
+    result = await streamText({
+      model: deepseek("deepseek-chat"),
+      system: SYSTEM_PROMPT,
+      messages,
+    });
   }
-
-  const result = await streamText({
-    model: selectedModel,
-    system: SYSTEM_PROMPT,
-    messages,
-  });
 
   return result.toDataStreamResponse();
 }

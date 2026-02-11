@@ -1,0 +1,7 @@
+tunnel: halltoo
+credentials-file: C:\Users\hallt\.cloudflared\<tunnel-id>.json
+
+ingress:
+  - hostname: halltoo.你的域名.com
+    service: http://localhost:3000
+  - service: http_status:404

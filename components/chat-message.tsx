@@ -4,6 +4,8 @@ import { Message } from "ai/react";
 import { Bot, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { cn } from "@/lib/utils";
+import { ThoughtProcess } from "./thought-process";
+import { useMemo } from "react";
 
 interface ChatMessageProps {
   message: Message;
@@ -11,6 +13,24 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user";
+
+  // 解析思考过程和内容
+  const { thought, content } = useMemo(() => {
+    const thinkingRegex = /<thinking>([\s\S]*?)<\/thinking>/;
+    const match = message.content.match(thinkingRegex);
+    
+    if (match) {
+      return {
+        thought: match[1].trim(),
+        content: message.content.replace(thinkingRegex, "").trim(),
+      };
+    }
+    
+    return {
+      thought: "",
+      content: message.content,
+    };
+  }, [message.content]);
 
   return (
     <div
@@ -25,42 +45,48 @@ export function ChatMessage({ message }: ChatMessageProps) {
         </div>
       )}
       
-      <div
-        className={cn(
-          "max-w-[80%] rounded-2xl px-4 py-3",
-          isUser
-            ? "bg-black text-white"
-            : "bg-gray-100 text-black"
+      <div className={cn("max-w-[80%]", !isUser && "space-y-2")}>
+        {!isUser && thought && (
+          <ThoughtProcess thought={thought} />
         )}
-      >
-        {isUser ? (
-          <p className="whitespace-pre-wrap break-words">{message.content}</p>
-        ) : (
-          <div className="prose prose-sm max-w-none prose-p:leading-relaxed prose-pre:p-0">
-            <ReactMarkdown
-              components={{
-                p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                ul: ({ children }) => <ul className="mb-2 ml-4 list-disc">{children}</ul>,
-                ol: ({ children }) => <ol className="mb-2 ml-4 list-decimal">{children}</ol>,
-                li: ({ children }) => <li className="mb-1">{children}</li>,
-                code: ({ children, className }) => {
-                  const isInline = !className;
-                  return isInline ? (
-                    <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-sm">
-                      {children}
-                    </code>
-                  ) : (
-                    <code className="block rounded bg-gray-200 p-2 font-mono text-sm overflow-x-auto">
-                      {children}
-                    </code>
-                  );
-                },
-              }}
-            >
-              {message.content}
-            </ReactMarkdown>
-          </div>
-        )}
+        
+        <div
+          className={cn(
+            "rounded-2xl px-4 py-3",
+            isUser
+              ? "bg-black text-white"
+              : "bg-gray-100 text-black"
+          )}
+        >
+          {isUser ? (
+            <p className="whitespace-pre-wrap break-words">{content}</p>
+          ) : (
+            <div className="prose prose-sm max-w-none prose-p:leading-relaxed prose-pre:p-0">
+              <ReactMarkdown
+                components={{
+                  p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                  ul: ({ children }) => <ul className="mb-2 ml-4 list-disc">{children}</ul>,
+                  ol: ({ children }) => <ol className="mb-2 ml-4 list-decimal">{children}</ol>,
+                  li: ({ children }) => <li className="mb-1">{children}</li>,
+                  code: ({ children, className }) => {
+                    const isInline = !className;
+                    return isInline ? (
+                      <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-sm">
+                        {children}
+                      </code>
+                    ) : (
+                      <code className="block rounded bg-gray-200 p-2 font-mono text-sm overflow-x-auto">
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
+                {content}
+              </ReactMarkdown>
+            </div>
+          )}
+        </div>
       </div>
 
       {isUser && (

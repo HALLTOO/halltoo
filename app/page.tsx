@@ -4,8 +4,9 @@ import { useChat } from "ai/react";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { Send, LogOut, Sparkles } from "lucide-react";
+import { Send, LogOut } from "lucide-react";
 import { ChatMessage } from "@/components/chat-message";
+import { AnimatedLogo } from "@/components/animated-logo";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
@@ -83,9 +84,7 @@ export default function ChatPage() {
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-600 shadow-lg shadow-purple-500/50 animate-breathe">
-              <Sparkles className="h-6 w-6 text-white" />
-            </div>
+            <AnimatedLogo size={48} />
             <h1 className="text-xl font-semibold tracking-tight text-white text-glow">
               Halltoo
             </h1>
@@ -140,9 +139,9 @@ export default function ChatPage() {
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ delay: 0.2, duration: 0.5 }}
-                      className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-cyan-500 to-purple-600 shadow-2xl shadow-purple-500/50 animate-breathe"
+                      className="mx-auto flex items-center justify-center"
                     >
-                      <Sparkles className="h-12 w-12 text-white" />
+                      <AnimatedLogo size={96} />
                     </motion.div>
                     <motion.h2 
                       initial={{ opacity: 0, y: 10 }}
@@ -192,8 +191,8 @@ export default function ChatPage() {
                       animate={{ opacity: 1, y: 0 }}
                       className="flex items-start gap-4"
                     >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-purple-600 shadow-lg shadow-purple-500/30">
-                        <Sparkles className="h-5 w-5 text-white animate-pulse" />
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center">
+                        <AnimatedLogo size={40} />
                       </div>
                       <div className="flex-1 space-y-2 pt-2">
                         <div className="flex items-center gap-2">

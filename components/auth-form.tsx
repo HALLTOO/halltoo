@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Apple } from "lucide-react";
+import { Apple } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { AnimatedLogo } from "./animated-logo";
 
 interface AuthFormProps {
   onSuccess: () => void;
@@ -108,9 +109,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="flex flex-1 items-center justify-center"
       >
-        <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white shadow-2xl">
-          <Sparkles className="h-10 w-10 text-black" />
-        </div>
+        <AnimatedLogo size={80} />
       </motion.div>
 
       {/* Bottom Section - Content */}

@@ -1,10 +1,11 @@
 "use client";
 
 import { Message } from "ai/react";
-import { User, Sparkles } from "lucide-react";
+import { User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
 import { AliveCursor } from "./alive-cursor";
+import { AnimatedLogo } from "./animated-logo";
 
 interface ChatMessageProps {
   message: Message;
@@ -29,13 +30,13 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-lg ${
           isUser
             ? "bg-gradient-to-br from-slate-700 to-slate-900 shadow-slate-500/30"
-            : "bg-gradient-to-br from-cyan-500 to-purple-600 shadow-purple-500/50 animate-breathe"
+            : ""
         }`}
       >
         {isUser ? (
           <User className="h-5 w-5 text-white" />
         ) : (
-          <Sparkles className="h-5 w-5 text-white" />
+          <AnimatedLogo size={40} />
         )}
       </motion.div>
 

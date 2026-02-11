@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: halltoo-chat
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_EMAILJS_SERVICE_ID
+        value: service_7zoqayo
+      - key: NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+        value: y0l6fwSRffm6D74NL
+      - key: NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+        sync: false

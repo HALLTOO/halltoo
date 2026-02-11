@@ -3,14 +3,17 @@
 import { Message } from "ai/react";
 import { User, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { AliveCursor } from "./alive-cursor";
 
 interface ChatMessageProps {
   message: Message;
+  isStreaming?: boolean;
 }
 
-export function ChatMessage({ message }: ChatMessageProps) {
+export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) {
   const isUser = message.role === "user";
+  const showCursor = !isUser && isStreaming;
 
   return (
     <motion.div 
@@ -61,6 +64,11 @@ export function ChatMessage({ message }: ChatMessageProps) {
                 p: ({ children }) => (
                   <p className="mb-4 last:mb-0 text-cyan-50/90 leading-relaxed">
                     {children}
+                    {showCursor && (
+                      <AnimatePresence>
+                        <AliveCursor />
+                      </AnimatePresence>
+                    )}
                   </p>
                 ),
                 ul: ({ children }) => (
@@ -103,6 +111,12 @@ export function ChatMessage({ message }: ChatMessageProps) {
             >
               {message.content}
             </ReactMarkdown>
+            {/* Show cursor at the end if not inside a paragraph */}
+            {showCursor && !message.content.includes('\n\n') && (
+              <AnimatePresence>
+                <AliveCursor />
+              </AnimatePresence>
+            )}
           </motion.div>
         )}
       </div>

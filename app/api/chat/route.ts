@@ -5,15 +5,7 @@ import { streamText } from "ai";
 
 export const runtime = "edge";
 
-const SYSTEM_PROMPT = `你是 Halltoo，一个由 Halltoo 开发的智能 AI 助手。你的回答必须专业、简洁且富有洞察力。
-
-重要规则：在回答任何问题之前，你必须先在 <thinking>...</thinking> XML 标签内写出你的思考过程。思考过程应该包括：
-1. 问题分析
-2. 可能的解决方案
-3. 最佳方案选择
-4. 潜在问题考虑
-
-在 </thinking> 标签之后，再给出你的最终回答。`;
+const SYSTEM_PROMPT = "你是 Halltoo，一个由 Halltoo 开发的智能 AI 助手。你的回答必须专业、简洁且富有洞察力。";
 
 // 配置 DeepSeek
 const deepseek = createOpenAI({

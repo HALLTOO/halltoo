@@ -16,11 +16,14 @@ import {
 
 export default function ChatPage() {
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (!isLoggedIn) {
       router.push("/login");
+    } else {
+      setMounted(true);
     }
   }, [router]);
 
@@ -31,9 +34,6 @@ export default function ChatPage() {
     api: "/api/chat",
     body: {
       model: selectedModel,
-    },
-    onError: (error) => {
-      console.error("Chat error:", error);
     },
   });
 
@@ -54,24 +54,28 @@ export default function ChatPage() {
     router.push("/login");
   };
 
+  if (!mounted) return null;
+
   return (
-    <div className="flex h-screen flex-col">
+    <div className="relative flex h-screen">
       {/* Glassmorphic Header */}
-      <header className="glass fixed top-0 left-0 right-0 z-50 shadow-float">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+      <header className="glass-strong fixed top-0 left-0 right-0 z-50 border-b border-white/10">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg">
-              <Sparkles className="h-5 w-5 text-white" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-600 shadow-lg shadow-purple-500/50 animate-breathe">
+              <Sparkles className="h-6 w-6 text-white" />
             </div>
-            <h1 className="text-xl font-semibold tracking-tight text-gray-900">Halltoo</h1>
+            <h1 className="text-xl font-semibold tracking-tight text-white text-glow">
+              Halltoo
+            </h1>
           </div>
           
           <div className="flex items-center gap-4">
             <Select value={selectedModel} onValueChange={setSelectedModel}>
-              <SelectTrigger className="w-[180px] glass border-white/20 shadow-float">
-                <SelectValue placeholder="选择模型" />
+              <SelectTrigger className="w-[180px] glass border-white/20 text-white">
+                <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="glass-strong border-white/20">
                 <SelectItem value="deepseek-chat">DeepSeek</SelectItem>
                 <SelectItem value="gpt-4o">GPT-4o</SelectItem>
                 <SelectItem value="claude-3-5-sonnet">Claude 3.5</SelectItem>
@@ -80,7 +84,7 @@ export default function ChatPage() {
             
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-gray-600 transition-all hover:bg-gray-100/50 active:scale-95"
+              className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-white/70 transition-all hover:bg-white/10 hover:text-white active:scale-95"
             >
               <LogOut className="h-4 w-4" />
               <span>退出</span>
@@ -89,40 +93,40 @@ export default function ChatPage() {
         </div>
       </header>
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-hidden pt-20 pb-32">
+      {/* Main Chat Area */}
+      <div className="relative z-10 flex-1 overflow-hidden pt-20 pb-32">
         <ScrollArea className="h-full">
           <div ref={scrollRef} className="h-full">
             {messages.length === 0 ? (
-              <div className="flex h-full items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-float-lg animate-float">
-                    <Sparkles className="h-10 w-10 text-white" />
+              <div className="flex h-full items-center justify-center px-4">
+                <div className="text-center space-y-6 animate-[float_6s_ease-in-out_infinite]">
+                  <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-cyan-500 to-purple-600 shadow-2xl shadow-purple-500/50 animate-breathe">
+                    <Sparkles className="h-12 w-12 text-white" />
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+                  <h2 className="text-4xl font-bold tracking-tight text-white text-glow">
                     欢迎使用 Halltoo
                   </h2>
-                  <p className="text-gray-500 leading-relaxed">
-                    开始对话，体验智能 AI 助手
+                  <p className="text-cyan-200/70 leading-relaxed max-w-md mx-auto">
+                    开始对话，体验未来智能 AI 助手
                   </p>
                 </div>
               </div>
             ) : (
-              <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
+              <div className="mx-auto max-w-3xl space-y-8 px-4 py-8">
                 {messages.map((message) => (
                   <ChatMessage key={message.id} message={message} />
                 ))}
                 {isLoading && (
                   <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-purple-600 shadow-lg shadow-purple-500/30">
                       <Sparkles className="h-5 w-5 text-white animate-pulse" />
                     </div>
                     <div className="flex-1 space-y-2 pt-2">
                       <div className="flex items-center gap-2">
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "0ms" }}></div>
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "150ms" }}></div>
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "300ms" }}></div>
-                        <span className="ml-2 text-sm text-gray-500">正在思考...</span>
+                        <div className="h-2 w-2 animate-bounce rounded-full bg-cyan-400" style={{ animationDelay: "0ms" }}></div>
+                        <div className="h-2 w-2 animate-bounce rounded-full bg-purple-400" style={{ animationDelay: "150ms" }}></div>
+                        <div className="h-2 w-2 animate-bounce rounded-full bg-cyan-400" style={{ animationDelay: "300ms" }}></div>
+                        <span className="ml-2 text-sm text-cyan-200/70">正在思考...</span>
                       </div>
                     </div>
                   </div>
@@ -133,17 +137,17 @@ export default function ChatPage() {
         </ScrollArea>
       </div>
 
-      {/* Floating Input Capsule */}
+      {/* Floating Input Capsule with Glow */}
       <div className="fixed bottom-8 left-0 right-0 z-40 px-4">
-        <form onSubmit={onSubmit} className="mx-auto max-w-2xl">
-          <div className="glass flex items-center gap-3 rounded-full px-6 py-4 shadow-float-lg">
+        <form onSubmit={onSubmit} className="mx-auto max-w-3xl">
+          <div className={`glass-strong flex items-center gap-4 rounded-full px-6 py-4 shadow-2xl ${isLoading ? 'animate-glow-pulse' : ''}`}>
             <input
               type="text"
               value={input}
               onChange={handleInputChange}
               placeholder="输入消息..."
               disabled={isLoading}
-              className="flex-1 bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none disabled:opacity-50"
+              className="flex-1 bg-transparent text-sm text-white placeholder-white/40 focus:outline-none disabled:opacity-50"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
@@ -154,9 +158,9 @@ export default function ChatPage() {
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-lg transition-all hover:shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 text-white shadow-lg shadow-purple-500/50 transition-all hover:shadow-xl hover:shadow-purple-500/70 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Send className="h-4 w-4" />
+              <Send className="h-5 w-5" />
             </button>
           </div>
         </form>

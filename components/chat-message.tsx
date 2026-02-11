@@ -12,13 +12,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user";
 
   return (
-    <div className="flex items-start gap-4">
+    <div className="flex items-start gap-4 group">
       {/* Avatar */}
       <div
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-lg ${
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-lg transition-transform group-hover:scale-110 ${
           isUser
-            ? "bg-gradient-to-br from-gray-900 to-black"
-            : "bg-gradient-to-br from-purple-500 to-pink-500"
+            ? "bg-gradient-to-br from-slate-700 to-slate-900 shadow-slate-500/30"
+            : "bg-gradient-to-br from-cyan-500 to-purple-600 shadow-purple-500/50 animate-breathe"
         }`}
       >
         {isUser ? (
@@ -31,53 +31,53 @@ export function ChatMessage({ message }: ChatMessageProps) {
       {/* Message Content */}
       <div className="flex-1 space-y-2">
         {isUser ? (
-          <div className="inline-block rounded-2xl bg-gradient-to-br from-gray-900 to-black px-5 py-3 shadow-float">
+          <div className="inline-block glass-strong rounded-2xl px-5 py-3 shadow-lg">
             <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-white">
               {message.content}
             </p>
           </div>
         ) : (
-          <div className="prose prose-sm max-w-none prose-p:leading-relaxed prose-p:text-gray-700 prose-headings:text-gray-900 prose-headings:tracking-tight prose-a:text-purple-600 prose-code:text-purple-600 prose-code:bg-purple-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-50 prose-pre:border prose-pre:border-gray-200">
+          <div className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-p:text-cyan-50/90 prose-headings:text-white prose-headings:tracking-tight prose-a:text-cyan-400 prose-code:text-cyan-400 prose-code:bg-cyan-500/10 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:glass prose-pre:border prose-pre:border-white/10">
             <ReactMarkdown
               components={{
                 p: ({ children }) => (
-                  <p className="mb-4 last:mb-0 text-gray-700 leading-relaxed">
+                  <p className="mb-4 last:mb-0 text-cyan-50/90 leading-relaxed">
                     {children}
                   </p>
                 ),
                 ul: ({ children }) => (
-                  <ul className="mb-4 ml-6 list-disc space-y-2">{children}</ul>
+                  <ul className="mb-4 ml-6 list-disc space-y-2 text-cyan-50/80">{children}</ul>
                 ),
                 ol: ({ children }) => (
-                  <ol className="mb-4 ml-6 list-decimal space-y-2">{children}</ol>
+                  <ol className="mb-4 ml-6 list-decimal space-y-2 text-cyan-50/80">{children}</ol>
                 ),
                 li: ({ children }) => (
-                  <li className="text-gray-700">{children}</li>
+                  <li className="text-cyan-50/80">{children}</li>
                 ),
                 code: ({ children, className }) => {
                   const isInline = !className;
                   return isInline ? (
-                    <code className="rounded bg-purple-50 px-1.5 py-0.5 font-mono text-xs text-purple-600">
+                    <code className="rounded bg-cyan-500/10 px-2 py-1 font-mono text-xs text-cyan-400 border border-cyan-500/20">
                       {children}
                     </code>
                   ) : (
-                    <code className="block rounded-lg border border-gray-200 bg-gray-50 p-4 font-mono text-xs text-gray-800 overflow-x-auto">
+                    <code className="block glass rounded-xl border border-white/10 p-4 font-mono text-xs text-cyan-100 overflow-x-auto">
                       {children}
                     </code>
                   );
                 },
                 h1: ({ children }) => (
-                  <h1 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
+                  <h1 className="mb-4 text-2xl font-bold tracking-tight text-white text-glow">
                     {children}
                   </h1>
                 ),
                 h2: ({ children }) => (
-                  <h2 className="mb-3 text-xl font-semibold tracking-tight text-gray-900">
+                  <h2 className="mb-3 text-xl font-semibold tracking-tight text-white">
                     {children}
                   </h2>
                 ),
                 h3: ({ children }) => (
-                  <h3 className="mb-2 text-lg font-semibold tracking-tight text-gray-900">
+                  <h3 className="mb-2 text-lg font-semibold tracking-tight text-cyan-100">
                     {children}
                   </h3>
                 ),

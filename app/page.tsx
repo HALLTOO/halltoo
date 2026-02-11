@@ -69,38 +69,38 @@ export default function ChatPage() {
   if (!mounted || status === "loading") return null;
 
   return (
-    <div className="relative flex h-screen">
-      {/* Glassmorphic Header with Animation */}
+    <div className="relative flex h-screen bg-gray-50">
+      {/* Header */}
       <motion.header 
-        initial={{ y: -100, opacity: 0 }}
+        initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="glass-strong fixed top-0 left-0 right-0 z-50 border-b border-white/10"
+        transition={{ duration: 0.4 }}
+        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200"
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
           <motion.div 
             className="flex items-center gap-3"
-            initial={{ x: -20, opacity: 0 }}
+            initial={{ x: -10, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
           >
-            <AnimatedLogo size={48} />
-            <h1 className="text-xl font-semibold tracking-tight text-white text-glow">
+            <AnimatedLogo size={32} />
+            <h1 className="text-lg font-semibold text-gray-900">
               Halltoo
             </h1>
           </motion.div>
           
           <motion.div 
-            className="flex items-center gap-4"
-            initial={{ x: 20, opacity: 0 }}
+            className="flex items-center gap-3"
+            initial={{ x: 10, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
+            transition={{ delay: 0.2, duration: 0.3 }}
           >
             <Select value={selectedModel} onValueChange={setSelectedModel}>
-              <SelectTrigger className="w-[180px] glass border-white/20 text-white">
+              <SelectTrigger className="w-[140px] h-9 border-gray-200 bg-white text-sm">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="glass-strong border-white/20">
+              <SelectContent className="bg-white border-gray-200">
                 <SelectItem value="deepseek-chat">DeepSeek</SelectItem>
                 <SelectItem value="gpt-4o">GPT-4o</SelectItem>
                 <SelectItem value="claude-3-5-sonnet">Claude 3.5</SelectItem>
@@ -109,19 +109,18 @@ export default function ChatPage() {
             
             <motion.button
               onClick={handleLogout}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-white/70 transition-all hover:bg-white/10 hover:text-white"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100"
             >
               <LogOut className="h-4 w-4" />
-              <span>退出</span>
             </motion.button>
           </motion.div>
         </div>
       </motion.header>
 
       {/* Main Chat Area */}
-      <div className="relative z-10 flex-1 overflow-hidden pt-20 pb-32">
+      <div className="relative z-10 flex-1 overflow-hidden pt-16 pb-24">
         <ScrollArea className="h-full">
           <div ref={scrollRef} className="h-full">
             <AnimatePresence mode="wait">
@@ -131,33 +130,33 @@ export default function ChatPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.6 }}
+                  transition={{ duration: 0.4 }}
                   className="flex h-full items-center justify-center px-4"
                 >
-                  <div className="text-center space-y-6">
+                  <div className="text-center space-y-6 max-w-md">
                     <motion.div 
-                      initial={{ scale: 0.8, opacity: 0 }}
+                      initial={{ scale: 0.9, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.2, duration: 0.5 }}
+                      transition={{ delay: 0.1, duration: 0.4 }}
                       className="mx-auto flex items-center justify-center"
                     >
-                      <AnimatedLogo size={96} />
+                      <AnimatedLogo size={80} />
                     </motion.div>
                     <motion.h2 
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4, duration: 0.5 }}
-                      className="text-4xl font-bold tracking-tight text-white text-glow"
+                      transition={{ delay: 0.2, duration: 0.4 }}
+                      className="text-3xl font-semibold text-gray-900"
                     >
                       欢迎使用 Halltoo
                     </motion.h2>
                     <motion.p 
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6, duration: 0.5 }}
-                      className="text-cyan-200/70 leading-relaxed max-w-md mx-auto"
+                      transition={{ delay: 0.3, duration: 0.4 }}
+                      className="text-gray-500 leading-relaxed"
                     >
-                      开始对话，体验未来智能 AI 助手
+                      开始对话，体验智能 AI 助手
                     </motion.p>
                   </div>
                 </motion.div>
@@ -166,7 +165,7 @@ export default function ChatPage() {
                   key="messages"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="mx-auto max-w-3xl space-y-8 px-4 py-8"
+                  className="mx-auto max-w-3xl space-y-6 px-4 py-8"
                 >
                   <AnimatePresence>
                     {messages.map((message, index) => {
@@ -176,9 +175,9 @@ export default function ChatPage() {
                       return (
                         <motion.div
                           key={message.id}
-                          initial={{ opacity: 0, y: 20 }}
+                          initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1, duration: 0.4 }}
+                          transition={{ delay: index * 0.05, duration: 0.3 }}
                         >
                           <ChatMessage message={message} isStreaming={isStreamingThisMessage} />
                         </motion.div>
@@ -189,29 +188,28 @@ export default function ChatPage() {
                     <motion.div 
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="flex items-start gap-4"
+                      className="flex items-start gap-3"
                     >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center">
-                        <AnimatedLogo size={40} />
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center">
+                        <AnimatedLogo size={32} />
                       </div>
-                      <div className="flex-1 space-y-2 pt-2">
+                      <div className="flex-1 space-y-2 pt-1">
                         <div className="flex items-center gap-2">
                           <motion.div 
-                            animate={{ y: [0, -8, 0] }}
+                            animate={{ y: [0, -6, 0] }}
                             transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
-                            className="h-2 w-2 rounded-full bg-cyan-400"
+                            className="h-1.5 w-1.5 rounded-full bg-gray-400"
                           />
                           <motion.div 
-                            animate={{ y: [0, -8, 0] }}
+                            animate={{ y: [0, -6, 0] }}
                             transition={{ duration: 0.6, repeat: Infinity, delay: 0.15 }}
-                            className="h-2 w-2 rounded-full bg-purple-400"
+                            className="h-1.5 w-1.5 rounded-full bg-gray-400"
                           />
                           <motion.div 
-                            animate={{ y: [0, -8, 0] }}
+                            animate={{ y: [0, -6, 0] }}
                             transition={{ duration: 0.6, repeat: Infinity, delay: 0.3 }}
-                            className="h-2 w-2 rounded-full bg-cyan-400"
+                            className="h-1.5 w-1.5 rounded-full bg-gray-400"
                           />
-                          <span className="ml-2 text-sm text-cyan-200/70">正在思考...</span>
                         </div>
                       </div>
                     </motion.div>
@@ -223,32 +221,22 @@ export default function ChatPage() {
         </ScrollArea>
       </div>
 
-      {/* Floating Input Capsule with Glow */}
+      {/* Input Bar */}
       <motion.div 
-        initial={{ y: 100, opacity: 0 }}
+        initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
-        className="fixed bottom-8 left-0 right-0 z-40 px-4"
+        transition={{ delay: 0.3, duration: 0.4 }}
+        className="fixed bottom-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-t border-gray-200 px-4 py-4"
       >
         <form onSubmit={onSubmit} className="mx-auto max-w-3xl">
-          <motion.div 
-            animate={isLoading ? {
-              boxShadow: [
-                "0 0 20px rgba(0, 191, 255, 0.3), 0 0 40px rgba(138, 43, 226, 0.2)",
-                "0 0 30px rgba(0, 191, 255, 0.5), 0 0 60px rgba(138, 43, 226, 0.3)",
-                "0 0 20px rgba(0, 191, 255, 0.3), 0 0 40px rgba(138, 43, 226, 0.2)",
-              ]
-            } : {}}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="glass-strong flex items-center gap-4 rounded-full px-6 py-4 shadow-2xl"
-          >
+          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 shadow-sm">
             <input
               type="text"
               value={input}
               onChange={handleInputChange}
               placeholder="输入消息..."
               disabled={isLoading}
-              className="flex-1 bg-transparent text-sm text-white placeholder-white/40 focus:outline-none disabled:opacity-50"
+              className="flex-1 bg-transparent text-base text-gray-900 placeholder-gray-400 focus:outline-none disabled:opacity-50"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
@@ -261,11 +249,11 @@ export default function ChatPage() {
               disabled={!input.trim() || isLoading}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 text-white shadow-lg shadow-purple-500/50 transition-all hover:shadow-xl hover:shadow-purple-500/70 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black text-white transition-all hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              <Send className="h-5 w-5" />
+              <Send className="h-4 w-4" />
             </motion.button>
-          </motion.div>
+          </div>
         </form>
       </motion.div>
     </div>

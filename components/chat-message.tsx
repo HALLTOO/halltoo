@@ -18,52 +18,40 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
 
   return (
     <motion.div 
-      initial={{ opacity: 0, x: isUser ? 20 : -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4 }}
-      className="flex items-start gap-4 group"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex items-start gap-3 group"
     >
       {/* Avatar */}
       <motion.div
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        transition={{ type: "spring", stiffness: 300 }}
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-lg ${
-          isUser
-            ? "bg-gradient-to-br from-slate-700 to-slate-900 shadow-slate-500/30"
-            : ""
-        }`}
+        whileHover={{ scale: 1.05 }}
+        transition={{ type: "spring", stiffness: 400 }}
+        className="flex h-8 w-8 shrink-0 items-center justify-center"
       >
         {isUser ? (
-          <User className="h-5 w-5 text-white" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200">
+            <User className="h-4 w-4 text-gray-600" />
+          </div>
         ) : (
-          <AnimatedLogo size={40} />
+          <AnimatedLogo size={32} />
         )}
       </motion.div>
 
       {/* Message Content */}
-      <div className="flex-1 space-y-2">
+      <div className="flex-1 space-y-1 min-w-0">
         {isUser ? (
-          <motion.div 
-            initial={{ scale: 0.95 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.2 }}
-            className="inline-block glass-strong rounded-2xl px-5 py-3 shadow-lg"
-          >
+          <div className="inline-block rounded-2xl bg-black px-4 py-2.5 shadow-sm">
             <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-white">
               {message.content}
             </p>
-          </motion.div>
+          </div>
         ) : (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-p:text-cyan-50/90 prose-headings:text-white prose-headings:tracking-tight prose-a:text-cyan-400 prose-code:text-cyan-400 prose-code:bg-cyan-500/10 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:glass prose-pre:border prose-pre:border-white/10"
-          >
+          <div className="prose prose-sm max-w-none prose-p:leading-relaxed prose-p:text-gray-700 prose-headings:text-gray-900 prose-headings:font-semibold prose-a:text-black prose-a:underline prose-code:text-gray-900 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-pre:bg-gray-100 prose-pre:border prose-pre:border-gray-200 prose-pre:rounded-xl">
             <ReactMarkdown
               components={{
                 p: ({ children }) => (
-                  <p className="mb-4 last:mb-0 text-cyan-50/90 leading-relaxed">
+                  <p className="mb-3 last:mb-0 text-gray-700 leading-relaxed">
                     {children}
                     {showCursor && (
                       <AnimatePresence>
@@ -73,38 +61,38 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
                   </p>
                 ),
                 ul: ({ children }) => (
-                  <ul className="mb-4 ml-6 list-disc space-y-2 text-cyan-50/80">{children}</ul>
+                  <ul className="mb-3 ml-5 list-disc space-y-1 text-gray-700">{children}</ul>
                 ),
                 ol: ({ children }) => (
-                  <ol className="mb-4 ml-6 list-decimal space-y-2 text-cyan-50/80">{children}</ol>
+                  <ol className="mb-3 ml-5 list-decimal space-y-1 text-gray-700">{children}</ol>
                 ),
                 li: ({ children }) => (
-                  <li className="text-cyan-50/80">{children}</li>
+                  <li className="text-gray-700">{children}</li>
                 ),
                 code: ({ children, className }) => {
                   const isInline = !className;
                   return isInline ? (
-                    <code className="rounded bg-cyan-500/10 px-2 py-1 font-mono text-xs text-cyan-400 border border-cyan-500/20">
+                    <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-gray-900 border border-gray-200">
                       {children}
                     </code>
                   ) : (
-                    <code className="block glass rounded-xl border border-white/10 p-4 font-mono text-xs text-cyan-100 overflow-x-auto">
+                    <code className="block bg-gray-100 rounded-xl border border-gray-200 p-4 font-mono text-xs text-gray-900 overflow-x-auto">
                       {children}
                     </code>
                   );
                 },
                 h1: ({ children }) => (
-                  <h1 className="mb-4 text-2xl font-bold tracking-tight text-white text-glow">
+                  <h1 className="mb-3 text-xl font-semibold text-gray-900">
                     {children}
                   </h1>
                 ),
                 h2: ({ children }) => (
-                  <h2 className="mb-3 text-xl font-semibold tracking-tight text-white">
+                  <h2 className="mb-2 text-lg font-semibold text-gray-900">
                     {children}
                   </h2>
                 ),
                 h3: ({ children }) => (
-                  <h3 className="mb-2 text-lg font-semibold tracking-tight text-cyan-100">
+                  <h3 className="mb-2 text-base font-semibold text-gray-900">
                     {children}
                   </h3>
                 ),
@@ -112,13 +100,12 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
             >
               {message.content}
             </ReactMarkdown>
-            {/* Show cursor at the end if not inside a paragraph */}
             {showCursor && !message.content.includes('\n\n') && (
               <AnimatePresence>
                 <AliveCursor />
               </AnimatePresence>
             )}
-          </motion.div>
+          </div>
         )}
       </div>
     </motion.div>

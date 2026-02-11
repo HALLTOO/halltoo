@@ -101,40 +101,50 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
   };
 
   return (
-    <div className="flex min-h-[100dvh] flex-col bg-black px-6 pb-8 pt-12">
-      {/* Top Section - Logo */}
+    <div className="flex min-h-screen items-center justify-center bg-white px-6 py-12">
       <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-1 items-center justify-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-[400px] space-y-8"
       >
-        <AnimatedLogo size={80} />
-      </motion.div>
+        {/* Logo */}
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="flex justify-center"
+        >
+          <AnimatedLogo size={64} />
+        </motion.div>
 
-      {/* Bottom Section - Content */}
-      <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-        className="space-y-6"
-      >
         {/* Title */}
-        <div>
-          <h1 className="text-3xl font-bold text-white">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="text-center"
+        >
+          <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
             {isLogin ? "Welcome back" : "Create account"}
           </h1>
-        </div>
+        </motion.div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <motion.form
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          onSubmit={handleSubmit}
+          className="space-y-4"
+        >
           {/* Email Input */}
           <div>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-14 w-full rounded-2xl bg-zinc-900 px-4 text-lg text-white placeholder-zinc-500 transition-colors focus:bg-zinc-800 focus:outline-none"
+              className="h-12 w-full rounded-xl border border-gray-200 bg-white px-4 text-base text-gray-900 placeholder-gray-400 transition-all focus:border-gray-400 focus:outline-none focus:ring-0"
               placeholder="Email address"
               required
             />
@@ -146,7 +156,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-14 w-full rounded-2xl bg-zinc-900 px-4 text-lg text-white placeholder-zinc-500 transition-colors focus:bg-zinc-800 focus:outline-none"
+              className="h-12 w-full rounded-xl border border-gray-200 bg-white px-4 text-base text-gray-900 placeholder-gray-400 transition-all focus:border-gray-400 focus:outline-none focus:ring-0"
               placeholder="Password"
               required
             />
@@ -159,7 +169,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
                 type="text"
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
-                className="h-14 flex-1 rounded-2xl bg-zinc-900 px-4 text-lg text-white placeholder-zinc-500 transition-colors focus:bg-zinc-800 focus:outline-none"
+                className="h-12 flex-1 rounded-xl border border-gray-200 bg-white px-4 text-base text-gray-900 placeholder-gray-400 transition-all focus:border-gray-400 focus:outline-none focus:ring-0"
                 placeholder="Verification code"
                 required
               />
@@ -167,8 +177,8 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
                 type="button"
                 onClick={sendVerificationEmail}
                 disabled={loading || codeSent}
-                whileTap={{ scale: 0.95 }}
-                className="h-14 rounded-2xl bg-zinc-800 px-6 text-base font-semibold text-white transition-colors active:bg-zinc-700 disabled:opacity-50"
+                whileTap={{ scale: 0.98 }}
+                className="h-12 rounded-xl border border-gray-200 bg-white px-6 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:opacity-50"
               >
                 {loading ? "..." : codeSent ? "Sent" : "Send"}
               </motion.button>
@@ -182,8 +192,8 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
               animate={{ opacity: 1, y: 0 }}
               className={`rounded-xl px-4 py-3 text-sm ${
                 message.includes("Success") || message.includes("sent")
-                  ? "bg-green-900/30 text-green-400"
-                  : "bg-red-900/30 text-red-400"
+                  ? "bg-green-50 text-green-700"
+                  : "bg-red-50 text-red-700"
               }`}
             >
               {message}
@@ -193,19 +203,19 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
           {/* Continue Button */}
           <motion.button
             type="submit"
-            whileTap={{ scale: 0.95 }}
-            className="h-14 w-full rounded-2xl bg-white text-lg font-bold text-black transition-all active:bg-gray-200"
+            whileTap={{ scale: 0.98 }}
+            className="h-12 w-full rounded-xl bg-black text-base font-medium text-white transition-all hover:bg-gray-800"
           >
             Continue
           </motion.button>
 
           {/* Divider */}
-          <div className="relative py-2">
+          <div className="relative py-4">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-zinc-800"></div>
+              <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-black px-3 text-zinc-500">OR</span>
+              <span className="bg-white px-4 text-gray-500">or</span>
             </div>
           </div>
 
@@ -214,8 +224,8 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
             <motion.button
               type="button"
               onClick={() => signIn("google", { callbackUrl: "/" })}
-              whileTap={{ scale: 0.95 }}
-              className="flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-white border border-gray-300 text-base font-semibold text-gray-700 transition-colors active:bg-gray-50"
+              whileTap={{ scale: 0.98 }}
+              className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path
@@ -240,17 +250,22 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
 
             <motion.button
               type="button"
-              whileTap={{ scale: 0.95 }}
-              className="flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-zinc-900 text-base font-semibold text-white transition-colors active:bg-zinc-800"
+              whileTap={{ scale: 0.98 }}
+              className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
             >
               <Apple className="h-5 w-5" />
               Continue with Apple
             </motion.button>
           </div>
-        </form>
+        </motion.form>
 
         {/* Toggle Login/Register */}
-        <div className="text-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="text-center"
+        >
           <button
             onClick={() => {
               setIsLogin(!isLogin);
@@ -258,18 +273,23 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
               setCodeSent(false);
               setVerificationCode("");
             }}
-            className="text-base text-zinc-400 active:text-white"
+            className="text-sm text-gray-600 hover:text-gray-900"
           >
             {isLogin ? "Don't have an account? Sign up" : "Already have an account? Log in"}
           </button>
-        </div>
+        </motion.div>
 
         {/* Footer */}
-        <div className="text-center text-xs text-zinc-600">
-          <a href="#" className="active:text-zinc-400">Terms of use</a>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="text-center text-xs text-gray-400"
+        >
+          <a href="#" className="hover:text-gray-600">Terms of use</a>
           {" · "}
-          <a href="#" className="active:text-zinc-400">Privacy policy</a>
-        </div>
+          <a href="#" className="hover:text-gray-600">Privacy policy</a>
+        </motion.div>
       </motion.div>
     </div>
   );

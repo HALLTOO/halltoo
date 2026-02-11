@@ -13,15 +13,7 @@ const SYSTEM_PROMPT = `你是 Halltoo，一个由 Halltoo 开发的智能 AI 助
 3. 最佳方案选择
 4. 潜在问题考虑
 
-在 </thinking> 标签之后，再给出你的最终回答。
-
-示例格式：
-<thinking>
-用户问了关于X的问题。我需要考虑A、B、C三个方面...
-最佳方案是...因为...
-</thinking>
-
-这是我的最终回答...`;
+在 </thinking> 标签之后，再给出你的最终回答。`;
 
 // 配置 DeepSeek
 const deepseek = createOpenAI({

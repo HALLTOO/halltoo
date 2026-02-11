@@ -3,6 +3,7 @@
 import { useChat } from "ai/react";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import { Send, LogOut, Sparkles } from "lucide-react";
 import { ChatMessage } from "@/components/chat-message";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,16 +18,21 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function ChatPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (!isLoggedIn) {
-      router.push("/login");
-    } else {
-      setMounted(true);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (status === "unauthenticated" && mounted) {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      if (!isLoggedIn) {
+        router.push("/login");
+      }
     }
-  }, [router]);
+  }, [status, router, mounted]);
 
   const [selectedModel, setSelectedModel] = useState("deepseek-chat");
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -52,10 +58,14 @@ export default function ChatPage() {
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
-    router.push("/login");
+    if (session) {
+      signOut({ callbackUrl: "/login" });
+    } else {
+      router.push("/login");
+    }
   };
 
-  if (!mounted) return null;
+  if (!mounted || status === "loading") return null;
 
   return (
     <div className="relative flex h-screen">

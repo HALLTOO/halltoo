@@ -3,6 +3,7 @@
 import { Message } from "ai/react";
 import { User, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { motion } from "framer-motion";
 
 interface ChatMessageProps {
   message: Message;
@@ -12,10 +13,17 @@ export function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user";
 
   return (
-    <div className="flex items-start gap-4 group">
+    <motion.div 
+      initial={{ opacity: 0, x: isUser ? 20 : -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.4 }}
+      className="flex items-start gap-4 group"
+    >
       {/* Avatar */}
-      <div
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-lg transition-transform group-hover:scale-110 ${
+      <motion.div
+        whileHover={{ scale: 1.1, rotate: 5 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-lg ${
           isUser
             ? "bg-gradient-to-br from-slate-700 to-slate-900 shadow-slate-500/30"
             : "bg-gradient-to-br from-cyan-500 to-purple-600 shadow-purple-500/50 animate-breathe"
@@ -26,18 +34,28 @@ export function ChatMessage({ message }: ChatMessageProps) {
         ) : (
           <Sparkles className="h-5 w-5 text-white" />
         )}
-      </div>
+      </motion.div>
 
       {/* Message Content */}
       <div className="flex-1 space-y-2">
         {isUser ? (
-          <div className="inline-block glass-strong rounded-2xl px-5 py-3 shadow-lg">
+          <motion.div 
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.2 }}
+            className="inline-block glass-strong rounded-2xl px-5 py-3 shadow-lg"
+          >
             <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-white">
               {message.content}
             </p>
-          </div>
+          </motion.div>
         ) : (
-          <div className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-p:text-cyan-50/90 prose-headings:text-white prose-headings:tracking-tight prose-a:text-cyan-400 prose-code:text-cyan-400 prose-code:bg-cyan-500/10 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:glass prose-pre:border prose-pre:border-white/10">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-p:text-cyan-50/90 prose-headings:text-white prose-headings:tracking-tight prose-a:text-cyan-400 prose-code:text-cyan-400 prose-code:bg-cyan-500/10 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:glass prose-pre:border prose-pre:border-white/10"
+          >
             <ReactMarkdown
               components={{
                 p: ({ children }) => (
@@ -85,9 +103,9 @@ export function ChatMessage({ message }: ChatMessageProps) {
             >
               {message.content}
             </ReactMarkdown>
-          </div>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

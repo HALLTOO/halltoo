@@ -22,9 +22,5 @@ export default function LoginPage() {
 
   if (!mounted) return null;
 
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-white dark:bg-black">
-      <AuthForm onSuccess={handleSuccess} />
-    </div>
-  );
+  return <AuthForm onSuccess={handleSuccess} />;
 }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Mail } from "lucide-react";
+import { Sparkles, Mail, Apple } from "lucide-react";
 
 interface AuthFormProps {
   onSuccess: () => void;
@@ -57,10 +57,10 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
       );
 
       setCodeSent(true);
-      setMessage("Verification code sent to your email");
+      setMessage("Code sent to your email");
     } catch (error: any) {
       console.error("EmailJS Error:", error);
-      setMessage(`Failed to send: ${error.text || error.message || "Please try again"}`);
+      setMessage(`Failed: ${error.text || error.message || "Try again"}`);
     } finally {
       setLoading(false);
     }
@@ -93,184 +93,166 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
       localStorage.setItem("userEmail", email);
       localStorage.setItem("userPassword", password);
       localStorage.setItem("isLoggedIn", "true");
-      setMessage("Registration successful!");
-      setTimeout(() => onSuccess(), 1000);
+      setMessage("Success!");
+      setTimeout(() => onSuccess(), 800);
     }
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="w-full max-w-[320px] space-y-8"
-    >
-      {/* Logo */}
+    <div className="flex min-h-[100dvh] flex-col bg-black px-6 pb-8 pt-12">
+      {/* Top Section - Logo */}
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.1, duration: 0.4 }}
-        className="flex justify-center"
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="flex flex-1 items-center justify-center"
       >
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#10A37F] shadow-lg">
-          <Sparkles className="h-6 w-6 text-white" />
+        <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white shadow-2xl">
+          <Sparkles className="h-10 w-10 text-black" />
         </div>
       </motion.div>
 
-      {/* Heading */}
+      {/* Bottom Section - Content */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.4 }}
-        className="text-center"
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+        className="space-y-6"
       >
-        <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          {isLogin ? "Welcome back" : "Create your account"}
-        </h1>
-      </motion.div>
-
-      {/* Form */}
-      <motion.form
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.4 }}
-        onSubmit={handleSubmit}
-        className="space-y-4"
-      >
-        {/* Email Input */}
+        {/* Title */}
         <div>
-          <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Email address
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="h-12 w-full rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-[#10A37F] focus:outline-none focus:ring-1 focus:ring-[#10A37F] dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500"
-            placeholder="you@example.com"
-            required
-          />
+          <h1 className="text-3xl font-bold text-white">
+            {isLogin ? "Welcome back" : "Create account"}
+          </h1>
         </div>
 
-        {/* Password Input */}
-        <div>
-          <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="h-12 w-full rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-[#10A37F] focus:outline-none focus:ring-1 focus:ring-[#10A37F] dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500"
-            placeholder="••••••••"
-            required
-          />
-        </div>
-
-        {/* Verification Code (Register only) */}
-        {!isLogin && (
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Email Input */}
           <div>
-            <label htmlFor="code" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Verification code
-            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-14 w-full rounded-2xl bg-zinc-900 px-4 text-lg text-white placeholder-zinc-500 transition-colors focus:bg-zinc-800 focus:outline-none"
+              placeholder="Email address"
+              required
+            />
+          </div>
+
+          {/* Password Input */}
+          <div>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="h-14 w-full rounded-2xl bg-zinc-900 px-4 text-lg text-white placeholder-zinc-500 transition-colors focus:bg-zinc-800 focus:outline-none"
+              placeholder="Password"
+              required
+            />
+          </div>
+
+          {/* Verification Code (Register only) */}
+          {!isLogin && (
             <div className="flex gap-2">
               <input
-                id="code"
                 type="text"
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
-                className="h-12 flex-1 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-[#10A37F] focus:outline-none focus:ring-1 focus:ring-[#10A37F] dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500"
-                placeholder="Enter code"
+                className="h-14 flex-1 rounded-2xl bg-zinc-900 px-4 text-lg text-white placeholder-zinc-500 transition-colors focus:bg-zinc-800 focus:outline-none"
+                placeholder="Verification code"
                 required
               />
-              <button
+              <motion.button
                 type="button"
                 onClick={sendVerificationEmail}
                 disabled={loading || codeSent}
-                className="h-12 rounded-md border border-gray-300 bg-white px-4 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                whileTap={{ scale: 0.95 }}
+                className="h-14 rounded-2xl bg-zinc-800 px-6 text-base font-semibold text-white transition-colors active:bg-zinc-700 disabled:opacity-50"
               >
                 {loading ? "..." : codeSent ? "Sent" : "Send"}
-              </button>
+              </motion.button>
+            </div>
+          )}
+
+          {/* Message */}
+          {message && (
+            <motion.div
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`rounded-xl px-4 py-3 text-sm ${
+                message.includes("Success") || message.includes("sent")
+                  ? "bg-green-900/30 text-green-400"
+                  : "bg-red-900/30 text-red-400"
+              }`}
+            >
+              {message}
+            </motion.div>
+          )}
+
+          {/* Continue Button */}
+          <motion.button
+            type="submit"
+            whileTap={{ scale: 0.95 }}
+            className="h-14 w-full rounded-2xl bg-white text-lg font-bold text-black transition-all active:bg-gray-200"
+          >
+            Continue
+          </motion.button>
+
+          {/* Divider */}
+          <div className="relative py-2">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-zinc-800"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-black px-3 text-zinc-500">OR</span>
             </div>
           </div>
-        )}
 
-        {/* Message */}
-        {message && (
-          <motion.div
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`rounded-md px-3 py-2 text-xs ${
-              message.includes("success") || message.includes("sent")
-                ? "bg-green-50 text-green-800 dark:bg-green-900/20 dark:text-green-400"
-                : "bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-400"
-            }`}
+          {/* Social Login Buttons */}
+          <div className="space-y-3">
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.95 }}
+              className="flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-zinc-900 text-base font-semibold text-white transition-colors active:bg-zinc-800"
+            >
+              <Mail className="h-5 w-5" />
+              Continue with Google
+            </motion.button>
+
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.95 }}
+              className="flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-zinc-900 text-base font-semibold text-white transition-colors active:bg-zinc-800"
+            >
+              <Apple className="h-5 w-5" />
+              Continue with Apple
+            </motion.button>
+          </div>
+        </form>
+
+        {/* Toggle Login/Register */}
+        <div className="text-center">
+          <button
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setMessage("");
+              setCodeSent(false);
+              setVerificationCode("");
+            }}
+            className="text-base text-zinc-400 active:text-white"
           >
-            {message}
-          </motion.div>
-        )}
-
-        {/* Continue Button */}
-        <button
-          type="submit"
-          className="h-12 w-full rounded-md bg-[#10A37F] text-sm font-medium text-white transition-all hover:bg-[#0d8c6d] focus:outline-none focus:ring-2 focus:ring-[#10A37F] focus:ring-offset-2"
-        >
-          Continue
-        </button>
-
-        {/* Divider */}
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
-          </div>
-          <div className="relative flex justify-center text-xs">
-            <span className="bg-white px-2 text-gray-500 dark:bg-black dark:text-gray-400">OR</span>
-          </div>
+            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Log in"}
+          </button>
         </div>
 
-        {/* Social Login Buttons */}
-        <button
-          type="button"
-          className="flex h-12 w-full items-center justify-center gap-3 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
-        >
-          <Mail className="h-4 w-4" />
-          Continue with Google
-        </button>
-      </motion.form>
-
-      {/* Toggle Login/Register */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.4 }}
-        className="text-center"
-      >
-        <button
-          onClick={() => {
-            setIsLogin(!isLogin);
-            setMessage("");
-            setCodeSent(false);
-            setVerificationCode("");
-          }}
-          className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-        >
-          {isLogin ? "Don't have an account? Sign up" : "Already have an account? Log in"}
-        </button>
+        {/* Footer */}
+        <div className="text-center text-xs text-zinc-600">
+          <a href="#" className="active:text-zinc-400">Terms of use</a>
+          {" · "}
+          <a href="#" className="active:text-zinc-400">Privacy policy</a>
+        </div>
       </motion.div>
-
-      {/* Footer */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.4 }}
-        className="text-center text-xs text-gray-400"
-      >
-        <a href="#" className="hover:text-gray-600 dark:hover:text-gray-300">Terms of use</a>
-        {" | "}
-        <a href="#" className="hover:text-gray-600 dark:hover:text-gray-300">Privacy policy</a>
-      </motion.div>
-    </motion.div>
+    </div>
   );
 }

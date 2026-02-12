@@ -34,22 +34,75 @@
   
   body {
     @apply text-foreground font-sans antialiased;
-    background: #FFFFFF;
+    background: linear-gradient(135deg, #f5f7fa 0%, #f0f2f5 50%, #e8eef5 100%);
+    background-attachment: fixed;
     position: relative;
     overflow-x: hidden;
+  }
+
+  /* Animated mesh gradient background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(34, 211, 238, 0.06) 0%, transparent 50%);
+    animation: meshMove 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes meshMove {
+    0%, 100% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+      transform: translate(5%, 5%) rotate(1deg);
+    }
+    66% {
+      transform: translate(-5%, 3%) rotate(-1deg);
+    }
   }
 }
 
 @layer utilities {
+  /* Glassmorphism utilities */
   .glass {
-    @apply backdrop-blur-xl bg-white/80 border border-gray-200;
+    @apply backdrop-blur-xl bg-white/70 border border-white/20;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
   }
   
   .glass-strong {
-    @apply backdrop-blur-xl bg-white/95 border border-gray-200;
+    @apply backdrop-blur-2xl bg-white/80 border border-white/30;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .glass-input {
+    @apply backdrop-blur-lg bg-white/90 border border-gray-200/50;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  }
+
+  /* Apple-style shadows */
+  .shadow-apple {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  }
+
+  .shadow-apple-lg {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Focus glow effect */
+  .focus-glow {
+    @apply focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50;
+    transition: all 0.2s ease;
   }
   
-  /* Scrollbar styling - ChatGPT style */
+  /* Scrollbar styling - Apple style */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -60,12 +113,15 @@
   }
   
   ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.12);
     border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.18);
+    background-clip: padding-box;
   }
   
   /* Code block styling */
@@ -81,5 +137,11 @@
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Elastic button press */
+  .btn-press {
+    @apply active:scale-95 transition-transform duration-100;
   }
 }

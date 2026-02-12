@@ -69,13 +69,13 @@ export default function ChatPage() {
   if (!mounted || status === "loading") return null;
 
   return (
-    <div className="relative flex h-screen bg-white">
-      {/* Header */}
+    <div className="relative flex h-screen">
+      {/* Header - Glass effect */}
       <motion.header 
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200"
+        className="fixed top-0 left-0 right-0 z-50 glass border-b border-gray-200/50"
       >
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
           <motion.div 
@@ -85,7 +85,7 @@ export default function ChatPage() {
             transition={{ delay: 0.1, duration: 0.3 }}
           >
             <AnimatedLogo size={28} />
-            <h1 className="text-base font-semibold text-gray-900">
+            <h1 className="text-base font-semibold text-gray-900 tracking-tight">
               Halltoo
             </h1>
           </motion.div>
@@ -97,10 +97,10 @@ export default function ChatPage() {
             transition={{ delay: 0.2, duration: 0.3 }}
           >
             <Select value={selectedModel} onValueChange={setSelectedModel}>
-              <SelectTrigger className="w-[130px] h-9 border-gray-300 bg-white text-sm">
+              <SelectTrigger className="w-[130px] h-9 border-gray-300/50 bg-white/50 text-sm backdrop-blur-sm hover:bg-white/80 transition-all duration-200">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-white border-gray-200">
+              <SelectContent className="glass-strong border-gray-200/50">
                 <SelectItem value="deepseek-chat">DeepSeek</SelectItem>
                 <SelectItem value="gpt-4o">GPT-4o</SelectItem>
                 <SelectItem value="claude-3-5-sonnet">Claude 3.5</SelectItem>
@@ -109,9 +109,9 @@ export default function ChatPage() {
             
             <motion.button
               onClick={handleLogout}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-white/60 btn-press"
             >
               <LogOut className="h-4 w-4" />
             </motion.button>
@@ -119,8 +119,8 @@ export default function ChatPage() {
         </div>
       </motion.header>
 
-      {/* Main Chat Area */}
-      <div className="relative z-10 flex-1 overflow-hidden pt-14">
+      {/* Main Chat Area - Centered, OpenAI style */}
+      <div className="relative z-10 flex-1 overflow-hidden pt-14 pb-32">
         <ScrollArea className="h-full">
           <div ref={scrollRef} className="h-full">
             <AnimatePresence mode="wait">
@@ -146,7 +146,7 @@ export default function ChatPage() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2, duration: 0.4 }}
-                      className="text-2xl font-semibold text-gray-900"
+                      className="text-2xl font-semibold text-gray-900 tracking-tight"
                     >
                       欢迎使用 Halltoo
                     </motion.h2>
@@ -165,7 +165,7 @@ export default function ChatPage() {
                   key="messages"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="pb-32"
+                  className="mx-auto max-w-3xl px-4 py-8 space-y-6"
                 >
                   <AnimatePresence>
                     {messages.map((message, index) => {
@@ -188,30 +188,28 @@ export default function ChatPage() {
                     <motion.div 
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="w-full border-b border-gray-100 bg-gray-50 py-8"
+                      className="flex items-start gap-4"
                     >
-                      <div className="mx-auto flex max-w-3xl items-start gap-6 px-4">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center">
-                          <AnimatedLogo size={28} state="thinking" />
-                        </div>
-                        <div className="flex-1 pt-1">
-                          <div className="flex items-center gap-1">
-                            <motion.div 
-                              animate={{ opacity: [0.4, 1, 0.4] }}
-                              transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}
-                              className="h-2 w-2 rounded-full bg-gray-400"
-                            />
-                            <motion.div 
-                              animate={{ opacity: [0.4, 1, 0.4] }}
-                              transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
-                              className="h-2 w-2 rounded-full bg-gray-400"
-                            />
-                            <motion.div 
-                              animate={{ opacity: [0.4, 1, 0.4] }}
-                              transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }}
-                              className="h-2 w-2 rounded-full bg-gray-400"
-                            />
-                          </div>
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center">
+                        <AnimatedLogo size={28} state="thinking" />
+                      </div>
+                      <div className="flex-1 pt-1">
+                        <div className="flex items-center gap-1.5">
+                          <motion.div 
+                            animate={{ opacity: [0.3, 1, 0.3] }}
+                            transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}
+                            className="h-2 w-2 rounded-full bg-gray-400"
+                          />
+                          <motion.div 
+                            animate={{ opacity: [0.3, 1, 0.3] }}
+                            transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
+                            className="h-2 w-2 rounded-full bg-gray-400"
+                          />
+                          <motion.div 
+                            animate={{ opacity: [0.3, 1, 0.3] }}
+                            transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }}
+                            className="h-2 w-2 rounded-full bg-gray-400"
+                          />
                         </div>
                       </div>
                     </motion.div>
@@ -223,47 +221,49 @@ export default function ChatPage() {
         </ScrollArea>
       </div>
 
-      {/* Input Bar */}
+      {/* Floating Input Bar - OpenAI Capsule Style */}
       <motion.div 
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.4 }}
-        className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-white via-white to-transparent px-4 pb-6 pt-4"
+        className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-6 pt-4 pointer-events-none"
       >
-        <form onSubmit={onSubmit} className="mx-auto max-w-3xl">
-          <div className="relative flex items-end gap-2 rounded-2xl border border-gray-300 bg-white px-4 py-3 shadow-lg shadow-black/5">
-            <textarea
-              value={input}
-              onChange={(e) => handleInputChange(e as any)}
-              placeholder="给 Halltoo 发送消息"
-              disabled={isLoading}
-              rows={1}
-              className="flex-1 resize-none bg-transparent text-base text-gray-900 placeholder-gray-500 focus:outline-none disabled:opacity-50 max-h-[200px]"
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  onSubmit(e as any);
-                }
-              }}
-              style={{
-                minHeight: '24px',
-                height: 'auto',
-              }}
-            />
-            <motion.button
-              type="submit"
-              disabled={!input.trim() || isLoading}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-900 text-white transition-all hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <Send className="h-4 w-4" />
-            </motion.button>
-          </div>
-          <p className="mt-2 text-center text-xs text-gray-500">
+        <div className="mx-auto max-w-3xl pointer-events-auto">
+          <form onSubmit={onSubmit}>
+            <div className="relative flex items-end gap-2 rounded-[28px] glass-input shadow-apple-lg transition-all duration-200 focus-within:shadow-[0_0_0_3px_rgba(59,130,246,0.1)] focus-within:border-blue-500/50 px-4 py-3">
+              <textarea
+                value={input}
+                onChange={(e) => handleInputChange(e as any)}
+                placeholder="给 Halltoo 发送消息"
+                disabled={isLoading}
+                rows={1}
+                className="flex-1 resize-none bg-transparent text-base text-gray-900 placeholder-gray-500 focus:outline-none disabled:opacity-50 max-h-[200px] tracking-tight"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    onSubmit(e as any);
+                  }
+                }}
+                style={{
+                  minHeight: '24px',
+                  height: 'auto',
+                }}
+              />
+              <motion.button
+                type="submit"
+                disabled={!input.trim() || isLoading}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-900 text-white transition-all hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed shadow-sm btn-press"
+              >
+                <Send className="h-4 w-4" />
+              </motion.button>
+            </div>
+          </form>
+          <p className="mt-2 text-center text-xs text-gray-500 tracking-tight">
             Halltoo 可能会犯错。请核查重要信息。
           </p>
-        </form>
+        </div>
       </motion.div>
     </div>
   );

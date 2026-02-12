@@ -192,7 +192,7 @@ export default function ChatPage() {
                     >
                       <div className="mx-auto flex max-w-3xl items-start gap-6 px-4">
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center">
-                          <AnimatedLogo size={28} />
+                          <AnimatedLogo size={28} state="thinking" />
                         </div>
                         <div className="flex-1 pt-1">
                           <div className="flex items-center gap-1">

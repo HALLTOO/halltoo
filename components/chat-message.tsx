@@ -54,7 +54,7 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
               <User className="h-5 w-5 text-white" />
             </div>
           ) : (
-            <AnimatedLogo size={28} />
+            <AnimatedLogo size={28} state={isStreaming ? "streaming" : "idle"} />
           )}
         </motion.div>
 

@@ -230,7 +230,7 @@ export default function ChatPage() {
       >
         <div className="mx-auto max-w-3xl pointer-events-auto">
           <form onSubmit={onSubmit}>
-            <div className="relative flex items-end gap-2 rounded-[28px] glass-input shadow-apple-lg transition-all duration-200 focus-within:shadow-[0_0_0_3px_rgba(59,130,246,0.1)] focus-within:border-blue-500/50 px-4 py-3">
+            <div className="relative flex items-end gap-2 rounded-[28px] glass-input shadow-lg ring-1 ring-black/5 transition-all duration-200 focus-within:glass-input-focus px-4 py-3">
               <textarea
                 value={input}
                 onChange={(e) => handleInputChange(e as any)}

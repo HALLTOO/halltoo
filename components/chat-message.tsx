@@ -48,8 +48,8 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
           className="flex h-8 w-8 shrink-0 items-center justify-center"
         >
           {isUser ? (
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 shadow-sm">
-              <User className="h-4 w-4 text-white" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 shadow-sm">
+              <span className="text-sm font-semibold text-white tracking-tight">U</span>
             </div>
           ) : (
             <AnimatedLogo size={28} state={isStreaming ? "streaming" : "idle"} />
@@ -60,7 +60,7 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
         <div className="flex-1 space-y-2 min-w-0">
           {isUser ? (
             <div className="inline-block rounded-2xl bg-neutral-100 px-4 py-2.5 shadow-sm">
-              <p className="whitespace-pre-wrap break-words text-base leading-relaxed text-gray-900 tracking-tight">
+              <p className="whitespace-pre-wrap break-words text-base leading-relaxed text-gray-900 tracking-tight font-medium">
                 {message.content}
               </p>
             </div>

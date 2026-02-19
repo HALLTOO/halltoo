@@ -31,7 +31,7 @@ export function useChat() {
     }
   }, [chatId])
 
-  const handleSend = async () => {
+  const handleSend = async (turnstileToken?: string) => {
     if (!input.trim()) return
 
     const userMessage: Message = {
@@ -90,20 +90,25 @@ export function useChat() {
           model: "gpt-4o", // Default for now, should come from context
           provider: "openai", // Default
           temperature: 0.7,
-          maxTokens: 4000
+          maxTokens: 4000,
+          turnstileToken
         }),
         signal: abortControllerRef.current.signal
       })
 
       if (!response.ok) {
         let errorMessage = response.statusText
+        let errorCode = ""
         try {
           const errorJson = await response.json()
           errorMessage = errorJson.error || errorMessage
+          errorCode = errorJson.code
         } catch (e) {
            // ignore json parse error
         }
-        throw new Error(errorMessage)
+        const err = new Error(errorMessage) as any
+        err.code = errorCode
+        throw err
       }
 
       const reader = response.body?.getReader()
@@ -168,7 +173,7 @@ export function useChat() {
       } else {
         console.error(error)
         toast({
-          title: "Error generating response",
+          title: error.code === "timeout-or-duplicate" ? "Verification Expired" : "Error generating response",
           description: error.message || "Please try again later.",
           variant: "destructive",
         })

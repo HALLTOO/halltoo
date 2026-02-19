@@ -12,11 +12,18 @@ import { EmptyState } from "@/components/chat/EmptyState"
 import { useInView } from "react-intersection-observer"
 import { cn } from "@/lib/utils"
 
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
+import { useLocale } from "next-intl"
+
 export default function ChatPageContent() {
   const { messages, isLoading, input, setInput, handleSend, stop } = useChat()
   const scrollRef = useRef<HTMLDivElement>(null)
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true)
   const { ref: bottomRef, inView: bottomInView } = useInView()
+  
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const turnstileRef = useRef<TurnstileInstance>(null)
+  const locale = useLocale()
 
   useEffect(() => {
     if (bottomInView) {
@@ -42,8 +49,27 @@ export default function ChatPageContent() {
     }
   }
 
+  const onSend = async () => {
+    await handleSend(turnstileToken || undefined)
+    // Always reset turnstile after use to get a new token for next request
+    turnstileRef.current?.reset()
+    setTurnstileToken(null)
+  }
+
   return (
     <div className="flex flex-col h-full relative">
+      <div className="hidden">
+        <Turnstile
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"}
+          ref={turnstileRef}
+          onSuccess={setTurnstileToken}
+          options={{
+            theme: 'auto',
+            language: locale === 'zh' ? 'zh-cn' : 'en',
+            size: 'invisible' // Invisible mode for better UX in chat
+          }}
+        />
+      </div>
       <ScrollArea className="flex-1 px-4 md:px-8 py-6" ref={scrollRef}>
         <div className="max-w-3xl mx-auto space-y-6 pb-32">
           {messages.length === 0 ? (
@@ -91,7 +117,7 @@ export default function ChatPageContent() {
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault()
-                handleSend()
+                onSend()
               }
             }}
             placeholder="Send a message..."
@@ -104,7 +130,7 @@ export default function ChatPageContent() {
             </Button>
             <Button
               size="icon"
-              onClick={isLoading ? stop : handleSend}
+              onClick={isLoading ? stop : onSend}
               disabled={!input.trim() && !isLoading}
               className={cn(
                 "h-8 w-8 rounded-lg transition-all duration-200",

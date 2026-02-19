@@ -281,7 +281,7 @@ export default function SignupPage() {
                         <Sparkles className="w-4 h-4 text-purple-400" />
                       </div>
                       <div className="bg-purple-500/10 border border-purple-500/20 rounded-2xl rounded-tr-none p-3 text-sm text-zinc-300">
-                        Certainly! Here's a script using pandas to analyze your dataset...
+                        Certainly! Here&apos;s a script using pandas to analyze your dataset...
                       </div>
                    </div>
                  </div>

@@ -1,0 +1,13 @@
+{
+  "HomePage": {
+    "title": "Unified AI Chat Workspace",
+    "description": "Access OpenAI, Claude, Gemini, and DeepSeek in one powerful, unified interface designed for teams and power users."
+  },
+  "Common": {
+    "getStarted": "Get Started",
+    "signIn": "Sign In",
+    "features": "Features",
+    "pricing": "Pricing",
+    "docs": "Docs"
+  }
+}

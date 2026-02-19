@@ -1,0 +1,13 @@
+{
+  "HomePage": {
+    "title": "统一的 AI 聊天工作台",
+    "description": "在一个强大的统一界面中访问 OpenAI、Claude、Gemini 和 DeepSeek，专为团队和高级用户设计。"
+  },
+  "Common": {
+    "getStarted": "开始使用",
+    "signIn": "登录",
+    "features": "功能",
+    "pricing": "定价",
+    "docs": "文档"
+  }
+}

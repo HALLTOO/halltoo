@@ -8,6 +8,8 @@ import { headers } from 'next/headers'
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30
 
+import { verifyTurnstile } from '@/lib/security/verifyTurnstile'
+
 export async function POST(req: Request) {
   try {
     const ip = headers().get('x-forwarded-for') || '127.0.0.1'
@@ -17,7 +19,19 @@ export async function POST(req: Request) {
       return new Response('Rate limit exceeded', { status: 429 })
     }
 
-    const { messages, model, provider, temperature, maxTokens } = await req.json()
+    const { messages, model, provider, temperature, maxTokens, turnstileToken } = await req.json()
+
+    // 1. Verify Turnstile
+    const turnstileResult = await verifyTurnstile(turnstileToken, ip);
+    if (!turnstileResult.success) {
+      return new Response(JSON.stringify({ 
+        error: turnstileResult.message,
+        code: turnstileResult.errorCode 
+      }), { 
+        status: turnstileResult.errorCode === 'missing-input-response' ? 400 : 403,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
     if (!messages || !Array.isArray(messages)) {
       return new Response('Invalid messages format', { status: 400 })

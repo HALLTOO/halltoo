@@ -5,7 +5,12 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowRight, Sparkles } from "lucide-react"
 
-export function Hero() {
+interface HeroProps {
+  title: string;
+  description: string;
+}
+
+export function Hero({ title, description }: HeroProps) {
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
       {/* Background Effects */}
@@ -33,8 +38,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent"
         >
-          Your unified workspace for <br className="hidden md:block" />
-          <span className="text-primary">Multiple Intelligence</span>
+          {title}
         </motion.h1>
 
         <motion.p
@@ -43,7 +47,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed"
         >
-          Stop juggling between tabs. Access OpenAI, Claude, Gemini, and DeepSeek in one powerful, unified interface designed for teams and power users.
+          {description}
         </motion.p>
 
         <motion.div

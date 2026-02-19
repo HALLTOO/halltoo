@@ -5,11 +5,14 @@ import { CTA } from "@/components/sections/CTA"
 import { LogoWall } from "@/components/sections/LogoWall"
 import { Security } from "@/components/sections/Security"
 import { Testimonials } from "@/components/sections/Testimonials"
+import { getTranslations } from "next-intl/server"
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const t = await getTranslations("HomePage");
+  
   return (
     <>
-      <Hero />
+      <Hero title={t("title")} description={t("description")} />
       <LogoWall />
       <Features />
       <Security />

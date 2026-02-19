@@ -1,13 +1,15 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname } from "@/i18n/routing"
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Sparkles, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
+import { useTranslations } from "next-intl"
+import { LanguageSwitcher } from "@/components/LanguageSwitcher"
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -16,6 +18,7 @@ export function Navbar() {
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const t = useTranslations('Common');
 
   useEffect(() => {
     setMounted(true)
@@ -26,9 +29,9 @@ export function Navbar() {
   })
 
   const navLinks = [
-    { name: "Features", href: "/features" },
-    { name: "Pricing", href: "/pricing" },
-    { name: "Docs", href: "/docs" },
+    { name: t('features'), href: "/features" },
+    { name: t('pricing'), href: "/pricing" },
+    { name: t('docs'), href: "/docs" },
   ]
 
   const toggleTheme = () => {
@@ -70,6 +73,7 @@ export function Navbar() {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-4">
+          <LanguageSwitcher />
           {mounted && (
             <Button
               variant="ghost"
@@ -82,18 +86,19 @@ export function Navbar() {
           )}
           <Link href="/login">
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-              Sign in
+              {t('signIn')}
             </Button>
           </Link>
           <Link href="/signup">
             <Button size="sm" className="rounded-full px-6 shadow-lg shadow-primary/20">
-              Get Started
+              {t('getStarted')}
             </Button>
           </Link>
         </div>
 
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 md:hidden">
+          <LanguageSwitcher />
           {mounted && (
             <Button
               variant="ghost"
@@ -133,10 +138,10 @@ export function Navbar() {
           ))}
           <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-border/40">
             <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="ghost" className="w-full justify-start">Sign in</Button>
+              <Button variant="ghost" className="w-full justify-start">{t('signIn')}</Button>
             </Link>
             <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
-              <Button className="w-full">Get Started</Button>
+              <Button className="w-full">{t('getStarted')}</Button>
             </Link>
           </div>
         </motion.div>

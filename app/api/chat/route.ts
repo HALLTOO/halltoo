@@ -47,10 +47,7 @@ export async function POST(req: Request) {
       case 'deepseek':
         if (!process.env.DEEPSEEK_API_KEY) throw new Error('DEEPSEEK_API_KEY is not configured')
         // DeepSeek is OpenAI compatible
-        modelInstance = openai(model || 'deepseek-chat', {
-          apiKey: process.env.DEEPSEEK_API_KEY,
-          baseURL: 'https://api.deepseek.com/v1',
-        })
+        modelInstance = openai(model || 'deepseek-chat')
         break
       default:
         return new Response('Invalid provider', { status: 400 })

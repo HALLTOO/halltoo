@@ -33,19 +33,24 @@ export async function POST(req: Request) {
 
     switch (provider) {
       case 'openai':
+        if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY is not configured')
         modelInstance = openai(model || 'gpt-4o')
         break
       case 'anthropic':
+        if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY is not configured')
         modelInstance = anthropic(model || 'claude-3-5-sonnet-20240620')
         break
       case 'google':
+        if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) throw new Error('GOOGLE_GENERATIVE_AI_API_KEY is not configured')
         modelInstance = google(model || 'models/gemini-1.5-pro-latest')
         break
       case 'deepseek':
+        if (!process.env.DEEPSEEK_API_KEY) throw new Error('DEEPSEEK_API_KEY is not configured')
         // DeepSeek is OpenAI compatible
-        // Note: For custom OpenAI compatible providers, we need to create a custom provider instance
-        // But for quick fix, we'll assume OpenAI standard
-        modelInstance = openai(model || 'deepseek-chat')
+        modelInstance = openai(model || 'deepseek-chat', {
+          apiKey: process.env.DEEPSEEK_API_KEY,
+          baseURL: 'https://api.deepseek.com/v1',
+        })
         break
       default:
         return new Response('Invalid provider', { status: 400 })
